@@ -1,11 +1,14 @@
 const validateUpdate = (schema) => {
   const func = (req, res, next) => {
-    if (Object.keys(req.body).length === 0 && req.body.constructor === Object) {
+    const { error } = schema.validate(req.body);
+
+    if (error) {
       res.status(400).json({
-        message: "missing field favorite",
+        message: `missing field favorite`,
       });
       return;
-    };
+    }
+    next();
   };
   return func;
 }
