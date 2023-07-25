@@ -14,6 +14,14 @@ const addSchema = Joi.object({
       /^(\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9})/,
     )
     .required(),
+  favorite: Joi.boolean(),
 });
 
-module.exports = addSchema;
+const updateFavoriteSchema = Joi.object({
+  favorite: Joi.boolean().required(),
+});
+
+module.exports = {
+  addSchema,
+  updateFavoriteSchema,
+};
