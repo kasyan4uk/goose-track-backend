@@ -1,9 +1,14 @@
 const Contact = require("../models/contact")
 
-const {  ctrlWrapper, HttpError } = require('../helpers');
+const { ctrlWrapper, HttpError } = require('../helpers');
 
 const getAll = async (req, res) => {
-    const result = await Contact.find();
+    const { _id: owner } = req.user;
+    const { page = 1, limit = 10 } = req.query;
+    const skip = (page - 1) * limit;
+    const result = await Contact.find({ owner },"-createdAt -updatedAt", {
+        skip, limit
+    }).populate("owner", "email subscription");
     res.status(200).json(result);
     
 };
@@ -18,7 +23,8 @@ const getById = async (req, res) => {
 };
 
 const add = async (req, res) => {
-    const result = await Contact.create(req.body);
+    const { _id: owner } = req.user;
+    const result = await Contact.create({ ...req.body, owner });
     res.status(201).json(result);
 };
 
@@ -37,7 +43,7 @@ const deleteById = async (req, res) => {
     if (!result) {
         throw HttpError(404, 'Not found')
     }
-    res.status(200).json({ message: "contact deleted", })
+    res.status(200).json({ message: "Contact deleted", })
 };
 
 const updateStatusContact = async (req, res) => {
