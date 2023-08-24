@@ -1,12 +1,13 @@
 const express = require('express');
 
+const router = express.Router();
+
 const ctrl = require('../../controllers/users')
 
 const { validation, authenticate } = require('../../middleware');
 
 const {schemas} = require('../../models/user');
 
-const router = express.Router();
 
 router.post('/register', validation(schemas.registerSchema), ctrl.register);
 
