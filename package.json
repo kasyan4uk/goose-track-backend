@@ -19,6 +19,7 @@
     "mongodb": "^5.7.0",
     "mongoose": "^6.9.2",
     "morgan": "1.10.0",
+    "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

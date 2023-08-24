@@ -1,0 +1,1872 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "GooseTrackApp",
+    "version": "1.0.0"
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [
+    {
+      "url": "http://localhost:3000/api-docs",
+      "description": "Tasklist application"
+    },
+    {
+      "url": "https://goose-track-backend-odyh.onrender.com/api-docs",
+      "description": "Tasklist application"
+    }
+  ],
+  "tags": [
+    { "name": "Auth", "description": "Authorization endpoints" },
+    { "name": "User", "description": "User endpoints" },
+    { "name": "Tasks", "description": "Tasks endpoints" },
+    { "name": "Reviews", "description": "Reviews endpoints" }
+  ],
+
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "New user registration",
+        "parameters": [],
+        "operationId": "register",
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RegistrationRequest" }
+            }
+          }
+        },
+
+        "responses": {
+          "201": {
+            "description": "Successful operation (сreated)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BadRequestResponse" }
+              }
+            }
+          },
+
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundResponse" }
+              }
+            }
+          },
+
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ConflictResponse" }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ServerError" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/auth/login": {
+      "post": {
+        "summary": "User logging in",
+        "parameters": [],
+        "tags": ["Auth"],
+        "operationId": "login",
+        "requestBody": {
+          "description": "Login data object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginRequest" }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LoginResponse" }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BadRequestResponse" }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ServerError" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User logging out",
+        "security": [{ "Bearer": [] }],
+        "operationId": "logout",
+        "parameters": [],
+
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LogoutResponse" }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ServerError" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/user/current": {
+      "get": {
+        "tags": ["User"],
+        "summary": "To get info about current user",
+        "operationId": "getUserInfo",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "The token issued to the current user",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCurrentUserResponse"
+                }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ServerError" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/user/info": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "Updates user data",
+        "security": [{ "Bearer": [] }],
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "The token issued to the current user",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+
+        "requestBody": {
+          "description": "Data object to update user profile",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserProfileInfoRequest"
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserProfileInfoResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BadRequestResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundResponse" }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ServerError" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/tasks": {
+      "get": {
+        "tags": ["Tasks"],
+        "summary": "Get user's tasks for a month / a day",
+        "operationId": "getAllTasks",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "year",
+            "description": "Year of the tasks",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "in": "query",
+            "name": "month",
+            "description": "Month of the tasks",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "in": "query",
+            "name": "day",
+            "description": "Day of the tasks",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GetAllTasksResponse" }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BadRequestResponse" }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundResponse" }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ServerError" }
+              }
+            }
+          }
+        }
+      },
+
+      "post": {
+        "tags": ["Tasks"],
+        "summary": "Create a new task",
+        "operationId": "addTask",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "requestBody": {
+          "description": "Object with a new task",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AddTaskRequest" }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AddTaskResponse" }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BadRequestResponse" }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+
+          "409": {
+            "description": "Conflict. This task is already in DB",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ConflictResponse" }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Internal Server Error (Failed to create a task)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ServerError" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/tasks/{taskId}": {
+      "patch": {
+        "tags": ["Tasks"],
+        "summary": "Update the task",
+        "operationId": "updateTasks",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "The token issued to the current user",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "description": "ID of task to update",
+            "schema": { "type": "string" },
+            "example": "6438255d9ef48a24e5d81693"
+          }
+        ],
+
+        "requestBody": {
+          "description": "Object to update a task",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateTaskRequest" }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UpdateTaskResponse" }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BadRequestResponse" }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+
+          "404": {
+            "description": "Task Not Found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundResponse" }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ServerError" }
+              }
+            }
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Tasks"],
+        "summary": "Delete task by ID",
+        "operationId": "deleteTasks",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "The token issued to the current user",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "description": "Notice ID",
+            "schema": { "type": "string" },
+            "example": "dg51vcf51xdfz1d4z5gf1v5x"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DeleteTaskResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BadRequestResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Task was not found to delete it",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundResponse" }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ServerError" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/reviews": {
+      "get": {
+        "tags": ["Reviews"],
+        "summary": "Get all reviews",
+        "operationId": "getAllReviews",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number of reviews collection",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of reviews on the page",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GetAllReviews" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request (invalid request body)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BadRequestResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Reviews are not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NotFoundResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ServerError" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/reviews/own": {
+      "get": {
+        "tags": ["Reviews"],
+        "summary": "Get own reviews created by current user",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GetOwnReview" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request (invalid request body) / missing owner",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Own reviews are not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error (failed to get own review)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "post": {
+        "tags": ["Reviews"],
+        "summary": "Adds own review by user",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Object for add user review",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stars": {
+                    "$ref": "#/components/schemas/Review/properties/stars"
+                  },
+                  "reviewText": {
+                    "$ref": "#/components/schemas/Review/properties/reviewText"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "default": "Successfully"
+                    },
+                    "reviewData": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "$ref": "#/components/schemas/Review/properties/_id"
+                        },
+                        "stars": {
+                          "$ref": "#/components/schemas/Review/properties/stars"
+                        },
+                        "reviewText": {
+                          "$ref": "#/components/schemas/Review/properties/reviewText"
+                        },
+                        "name": {
+                          "$ref": "#/components/schemas/Review/properties/name"
+                        },
+                        "avatarUrl": {
+                          "$ref": "#/components/schemas/Review/properties/avatarUrl"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Missing owner or missing body of request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict (Your review does already exist)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error (failed to create a review)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "patch": {
+        "tags": ["Reviews"],
+        "summary": "Updates review by the user",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Object for update user review",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stars": {
+                    "$ref": "#/components/schemas/Review/properties/stars"
+                  },
+                  "reviewText": {
+                    "$ref": "#/components/schemas/Review/properties/reviewText"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdatePatchReviewResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Missing owner or missing body of request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found (review is not found for update it)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error (failed to update a review_",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Reviews"],
+        "summary": "Delete review",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteReviewResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing owner",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Review was not found to delete it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error (failed to delete a review)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "BadRequestResponse": {
+        "type": "object",
+        "items": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "default": "Bad Request"
+            },
+            "status": {
+              "type": "integer",
+              "default": 400
+            }
+          }
+        },
+        "example": {
+          "message": "Bad Request"
+        }
+      },
+
+      "UnauthorizedResponse": {
+        "type": "object",
+        "items": {
+          "type": "object",
+          "required": ["message"],
+          "properties": {
+            "message": {
+              "type": "string",
+              "default": "Unauthorized"
+            },
+            "status": {
+              "type": "integer",
+              "default": 401
+            }
+          }
+        },
+        "example": {
+          "message": "Email or password is wrong"
+        }
+      },
+
+      "ForbiddenResponse": {
+        "type": "object",
+        "items": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "message": "Forbidden. You have no access rights"
+            },
+            "status": {
+              "type": "integer",
+              "default": 403
+            }
+          }
+        },
+        "example": {
+          "message": "Forbidden"
+        }
+      },
+
+      "NotFoundResponse": {
+        "type": "object",
+        "items": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "message": "Not found"
+            },
+            "status": {
+              "type": "integer",
+              "default": 404
+            }
+          }
+        },
+        "example": {
+          "message": "Not found"
+        }
+      },
+
+      "ConflictResponse": {
+        "type": "object",
+        "items": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "default": "User with such email already exists"
+            },
+            "status": {
+              "type": "integer",
+              "default": 409
+            }
+          }
+        },
+        "example": {
+          "message": "Conflict"
+        }
+      },
+
+      "ServerError": {
+        "description": "Internal Server Error",
+        "type": "object",
+        "required": ["message"],
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Server Error"
+          },
+          "status": {
+            "type": "integer",
+            "default": 500
+          }
+        }
+      },
+
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["name", "email", "password"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Bob Marley"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+
+      "RegistrationResponse": {
+        "type": "object",
+        "required": ["name", "email", "_id", "message"],
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Successfully registered"
+          },
+          "userData": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "Bob Marley",
+                "description": "User's name"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              },
+              "_id": {
+                "type": "number",
+                "description": "User's id",
+                "example": "3xz21vc42bl3bv436b54lgfhg47"
+              },
+              "token": {
+                "type": "string",
+                "example": "eyJhbIkpXVCJ9.eyJpZCIMxNjk1fQ.mqGKNW_racETj4s",
+                "default": null,
+                "description": "User's personal token to access app resources. Created by backend after user authorized"
+              }
+            }
+          }
+        }
+      },
+
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Logged in successfully"
+          },
+          "userData": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "Bob Marley",
+                "description": "User's name"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              },
+              "token": {
+                "type": "string",
+                "description": "User's token",
+                "example": "123xdc45678901vb112.56vv5gxvb94vk8h.f5g446xcz4gz25cv"
+              }
+            }
+          }
+        }
+      },
+
+      "LogoutResponse": {
+        "type": "object",
+        "required": ["message"],
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Logged out successfully"
+          }
+        }
+      },
+
+      "GetCurrentUserResponse": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string", "default": "Success" },
+          "userData": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "Bob Marley"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email"
+              },
+              "phone": {
+                "type": "string",
+                "description": "User's phone",
+                "example": "38 (068) 557 14 44"
+              },
+              "skype": {
+                "type": "string",
+                "description": "User's skype account",
+                "example": "skypeacc:user"
+              },
+              "birthday": {
+                "type": "string",
+                "description": "User's birth day",
+                "example": "21/10/1990"
+              },
+              "avatarUrl": {
+                "type": "string",
+                "description": "User's avatar",
+                "example": "https://www.gravatar.com/avatars/45572"
+              }
+            }
+          }
+        }
+      },
+
+      "UpdateUserProfileInfoRequest": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Bob Marley"
+          },
+          "phone": {
+            "type": "string",
+            "description": "User's phone",
+            "example": "38 (091) 256 12 14"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "User's birthday",
+            "example": "20/10/2001"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "bob_marley@gmail.com",
+            "description": "User's email address"
+          },
+          "skype": {
+            "type": "string",
+            "description": "User's skype account",
+            "example": "skype:user"
+          },
+          "avatarUrl": {
+            "type": "string",
+            "description": "User's avatar",
+            "example": "https://avatar.com"
+          }
+        }
+      },
+
+      "UpdateUserProfileInfoResponse": {
+        "type": "object",
+        "required": ["message", "name"],
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Profile info updated successfully"
+          },
+          "userData": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "Bob Marley"
+              },
+              "phone": {
+                "type": "string",
+                "description": "User's phone",
+                "example": "38 (091) 256 12 14"
+              },
+              "birthday": {
+                "type": "string",
+                "description": "User's birthday",
+                "example": "20/10/2001"
+              },
+              "email": {
+                "type": "string",
+                "format": "email",
+                "example": "bob_marley@gmail.com",
+                "description": "User's email address"
+              },
+              "skype": {
+                "type": "string",
+                "description": "User's skype account",
+                "example": "skypeacc:user"
+              },
+              "avatarUrl": {
+                "type": "string",
+                "description": "User's avatar url",
+                "example": "https://gravatar.com/avatars/2552"
+              }
+            }
+          }
+        }
+      },
+
+      "GetAllTasksResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Success",
+            "example": "Success"
+          },
+          "total": { "type": "integer" },
+          "tasks": {
+            "type": "array",
+            "items": { "type": "object", "$ref": "#/components/schemas/Task" },
+
+            "example": [
+              {
+                "_id": "64db9a08372ee56caf90b7aa",
+                "title": "Meeting with team",
+                "start": "12:00",
+                "end": "12:30",
+                "priority": "low",
+                "date": "2023-08-29",
+                "status": "todo",
+                "owner": "dfd9h5h45xd1g41s5d1hg1x",
+                "createdAt": "2023-08-25T15:30:16.215Z",
+                "updatedAt": "2023-08-26T15:30:16.215Z"
+              },
+              {
+                "_id": "57db9a5daee0e37ca304ed6d",
+                "title": "Project work out",
+                "start": "14:00",
+                "end": "18:30",
+                "priority": "low",
+                "date": "2023-08-26",
+                "status": "todo",
+                "owner": "64d387e745021a7e4d683ba0",
+                "createdAt": "2023-08-15T15:31:41.730Z",
+                "updatedAt": "2023-08-15T15:31:41.730Z"
+              },
+              {
+                "_id": "454db9b647bc65861f811e5ec",
+                "title": "Call team",
+                "start": "12:00",
+                "end": "14:30",
+                "priority": "low",
+                "date": "2023-08-28",
+                "status": "todo",
+                "owner": "64d387e745021a7e4d683ba0",
+                "createdAt": "2023-08-24T15:36:05.019Z",
+                "updatedAt": "2023-08-28T15:36:05.019Z"
+              }
+            ]
+          }
+        }
+      },
+
+      "AddTaskRequest": {
+        "type": "object",
+        "required": ["title", "start", "end", "date", "priority", "status"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Task text",
+            "example": "Visit a meeting"
+          },
+          "start": {
+            "type": "string",
+            "format": "time",
+            "example": "14:30",
+            "description": "Task's start time"
+          },
+          "end": {
+            "type": "string",
+            "format": "time",
+            "example": "15:30",
+            "description": "Task's end time"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["low", "medium", "high"],
+            "default": "low",
+            "description": "Task priority",
+            "example": "medium"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "2023-08-29",
+            "description": "Time of task start"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["todo", "inprogress", "done"],
+            "default": "todo",
+            "description": "Task's due to do status"
+          }
+        },
+        "example": {
+          "title": "Visit a meeting",
+          "start": "15:00",
+          "end": "16:30",
+          "priority": "medium",
+          "date": "2023-08-23",
+          "status": "todo"
+        }
+      },
+
+      "AddTaskResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Task added successfully"
+          },
+          "task": {
+            "type": "object",
+            "$ref": "#/components/schemas/Task"
+          }
+        }
+      },
+
+      "UpdateTaskRequest": {
+        "type": "object",
+        "required": ["title", "start", "end", "date", "priority", "category"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Task text / title",
+            "example": "Meet team"
+          },
+          "start": {
+            "type": "string",
+            "format": "time",
+            "example": "14:30",
+            "description": "Task's start time. `HH:mm` format"
+          },
+          "end": {
+            "type": "string",
+            "format": "time",
+            "example": "15:30",
+            "description": "Task's end time. `HH:mm` format"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["low", "medium", "high"],
+            "default": "low",
+            "description": "Task priority (low / medium / high)",
+            "example": "medium"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "2023-08-29",
+            "description": "Time of task addition in app. 'YYYY-MM-DD' format"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["todo", "inprogress", "done"],
+            "default": "todo",
+            "description": "Task's due to do status",
+            "example": "inprogress"
+          }
+        },
+        "example": {
+          "title": "Hold a team meeting",
+          "start": "13:00",
+          "end": "14:30",
+          "priority": "high",
+          "date": "2023-08-24",
+          "category": "todo"
+        }
+      },
+
+      "UpdateTaskResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Success",
+            "example": "Success. Task edited successfully"
+          },
+          "taskData": {
+            "type": "object",
+            "$ref": "#/components/schemas/Task"
+          }
+        }
+      },
+
+      "DeleteTaskResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Task deleted successfully"
+          }
+        }
+      },
+
+      "GetAllReviews": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Successfully"
+          },
+          "reviews": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Review" }
+          },
+          "totalRewiews": { "type": "integer", "example": "10" },
+          "totalPages": { "type": "integer", "example": "2" },
+          "currentPage": { "type": "integer", "example": "1" },
+          "limit": { "type": "integer", "example": "5" }
+        }
+      },
+
+      "GetOwnReview": {
+        "type": "object",
+        "properties": {
+          "reviews": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Review" }
+          }
+        }
+      },
+
+      "UpdatePatchReviewResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Review edited & updated successfully"
+          },
+
+          "reviewData": {
+            "type": "object",
+            "$ref": "#/components/schemas/Review"
+          }
+        }
+      },
+
+      "DeleteReviewResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Review deleted successfully"
+          }
+        }
+      },
+
+      "Task": {
+        "type": "object",
+        "required": [
+          "title",
+          "start",
+          "end",
+          "date",
+          "status",
+          "priority",
+          "owner"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "642fdf8745bc73b2aecbae7b",
+            "description": "Backend-generated unique ID"
+          },
+          "title": {
+            "type": "string",
+            "description": "Task text",
+            "example": "Visit a meeting"
+          },
+          "start": {
+            "type": "string",
+            "format": "time",
+            "example": "14:30",
+            "description": "Task's start time"
+          },
+          "end": {
+            "type": "string",
+            "format": "time",
+            "example": "15:30",
+            "description": "Task's end time"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["low", "medium", "high"],
+            "default": "low",
+            "description": "Task priority",
+            "example": "medium"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "2023-08-29",
+            "description": "Time of task start"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["todo", "inprogress", "done"],
+            "default": "todo",
+            "description": "Task's due to do status"
+          },
+          "owner": {
+            "type": "string",
+            "example": "642fdf8745bc73b2aecbae7b",
+            "description": "Owner's unique ID"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-08-242T21:11:16.493Z",
+            "description": "Backend-generated date and time of task creating"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-08-25T10:31:12.493Z",
+            "description": "Backend-generated date and time of task updating"
+          }
+        }
+      },
+
+      "Review": {
+        "type": "object",
+        "required": ["stars", "reviewText", "name", "avatarUrl"],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "54dsf54zs545v15xdd1c51v",
+            "description": "Backend-generated unique ID of a review."
+          },
+          "stars": {
+            "type": "integer",
+            "description": "Number of stars",
+            "minimum": 1,
+            "maximum": 5,
+            "example": 4
+          },
+          "reviewText": {
+            "type": "string",
+            "description": "Text of review",
+            "example": "Great useful app!"
+          },
+          "name": {
+            "type": "string",
+            "description": "Reviewer's name",
+            "example": "Paul Glen"
+          },
+          "avatarUrl": {
+            "type": "string",
+            "description": "Reviewer's avatar",
+            "example": "https://s.gravatar.com/avatar/x255c?s=10&r=x&d=retro"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-08-24T10:13:10.493Z",
+            "description": "Backend-generated date and time of task creating"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-08-25T17:31:33.493Z",
+            "description": "Backend-generated date and time of task updating"
+          }
+        }
+      }
+    },
+
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+
+    "User": {
+      "type": "object",
+      "required": ["name", "email", "password"],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "642fdf8745bc73b2aecbae7b",
+          "description": "Backend-generated unique identifier."
+        },
+        "name": {
+          "type": "string",
+          "example": "Bob Marley",
+          "description": "User's name"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "example": "bob_marley@gmail.com",
+          "description": "User's email address"
+        },
+        "password": {
+          "type": "string",
+          "example": "ivan123456petrenko",
+          "description": "User's password. At least 6 characters"
+        },
+        "skype": {
+          "type": "string",
+          "example": "live:.cid.6654401b9e97jdaa",
+          "default": null,
+          "description": "User's skype login"
+        },
+        "phone": {
+          "type": "string",
+          "example": "066-555-44-33",
+          "default": null,
+          "description": "User's phone number"
+        },
+        "birthday": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2023-04-12T07:28:49.493Z",
+          "default": null,
+          "description": "User's day of birth"
+        },
+        "avatarURL": {
+          "type": "string",
+          "example": "https://s.gravatar.com/avatar/93e9084ab289b7f1f5e4ab6716a56c3b?s=100&r=x&d=retro",
+          "description": "User's avatar"
+        },
+        "token": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MzA0Yzg0YmQxNjgwMzBkOTIyMDQ3YyIsImlhdCI6MTY4MDk0NTI5NSwiZXhwIjoxNjgxMDMxNjk1fQ.mqGKd15X-SXUafsR9tFw2BucuG9bmINW_rac35ETj4s",
+          "default": null,
+          "description": "User's personal token to access site resources. Created by backend after user's authorization"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2023-04-12T07:28:49.493Z",
+          "description": "Backend-generated date and time of creating user's data"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2023-04-12T07:28:49.493Z",
+          "description": "Backend-generated date and time of updating user's data"
+        }
+      }
+    }
+  }
+}
