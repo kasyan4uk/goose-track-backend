@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const { User } = require("../models/user");
 
-// const { SECRET_KEY } = process.env;
+const { SECRET_KEY } = process.env;
 
 const { ctrlWrapper, HttpError, } = require('../helpers');
 
@@ -42,10 +42,6 @@ const login = async(req, res) => {
     const payload = {
         id: user._id,
     }
-
-// ------------------------------------
-    const { SECRET_KEY } = process.env;
-// ------------------------------------
     
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
     await User.findByIdAndUpdate(user.id, {token})
