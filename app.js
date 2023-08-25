@@ -9,7 +9,7 @@ const swaggerDocument = require("./swagger.json");
 
 const userRouter = require('./routes/api/users');
 const authRouter = require('./routes/api/auth');
-const taskRouter = require('./routes/api/tasks')
+const taskRouter = require('./routes/api/tasks');
 const reviewRouter = require('./routes/api/reviews');
 
 const app = express()
