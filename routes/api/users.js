@@ -8,6 +8,6 @@ const { authenticate } = require('../../middleware');
 
 router.get('/current', authenticate, ctrl.getCurrent);
 
-router.patch('/info', );
+router.patch('/', );
 
 module.exports = router;
