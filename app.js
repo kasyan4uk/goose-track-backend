@@ -7,7 +7,7 @@ require('dotenv').config();
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
-const userRouter = require('./routes/api/users');
+const userRouter = require('./routes/api/user');
 const authRouter = require('./routes/api/auth');
 const taskRouter = require('./routes/api/tasks');
 const reviewRouter = require('./routes/api/reviews');
@@ -23,7 +23,7 @@ app.use(express.json())
 // підключення swagger документації 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use('/users', userRouter);
+app.use('/user', userRouter);
 app.use('/auth', authRouter);
 app.use('/tasks', taskRouter);
 app.use('/reviews', reviewRouter);
