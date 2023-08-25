@@ -8,8 +8,6 @@ const { authenticate } = require('../../middleware');
 
 router.get('/current', authenticate, ctrl.getCurrent);
 
-router.post('/logout', authenticate, ctrl.logout);
-
-router.patch('/', authenticate, ctrl.updateSubscriptionUser);
+router.patch('/info', );
 
 module.exports = router;
