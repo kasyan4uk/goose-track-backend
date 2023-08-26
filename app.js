@@ -7,8 +7,11 @@ require('dotenv').config();
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
-const authRouter = require('./routes/api/users');
-const reviewsRouter = require("./routes/api/reviews");
+const userRouter = require('./routes/api/user');
+const authRouter = require('./routes/api/auth');
+const taskRouter = require('./routes/api/tasks');
+const reviewRouter = require('./routes/api/reviews');
+
 
 const app = express()
 
@@ -21,8 +24,11 @@ app.use(express.json())
 // підключення swagger документації 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use('/users', authRouter)
-app.use('/reviews', reviewsRouter);
+app.use('/user', userRouter);
+app.use('/auth', authRouter);
+app.use('/tasks', taskRouter);
+app.use('/reviews', reviewRouter);
+
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' })
