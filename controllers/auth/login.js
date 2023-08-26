@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User } = require("../../models/user");
 
-const  {HttpError, ctrlWrapper}  = require("../../helpers");
+const  {HttpError}  = require("../../helpers");
 
 const { SECRET_KEY } = process.env;
 
@@ -26,8 +26,8 @@ const login = async(req, res) => {
     await User.findByIdAndUpdate(user.id, {token})
 
     res.status(200).json({
-        "message": "Logged in successfully",
-        "userData": {
+        message: "Logged in successfully",
+        userData: {
           name: user.name,
           email: user.email,
           token,
@@ -35,4 +35,4 @@ const login = async(req, res) => {
     });
 };
 
-module.exports = ctrlWrapper(login);
+module.exports = login;
