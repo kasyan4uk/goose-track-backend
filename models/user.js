@@ -73,10 +73,31 @@ const loginSchema = Joi.object({
           "string.empty": ` String is empty. Enter password`,
         }),
 });
+const nameSchema = Joi.object({
+  name: Joi.string()
+      .required()
+      .messages({
+        "any.required": ` Missing required name field`,
+        "string.empty": ` String is empty. Enter name`,
+      })
+    });
+
+const emailSchema = Joi.object({
+  email: Joi.string()
+      .pattern(emailRegexp)
+      .required()
+      .messages({
+        "any.required": ` Missing required email field`,
+        "string.empty": ` String is empty. Enter email`,
+        "string.pattern.base": "Email is not valid",
+      }),
+    });
 
 const schemas = {
     registerSchema,
     loginSchema,
+    nameSchema,
+    emailSchema,
 };
 
 const User = model('user', userSchema);

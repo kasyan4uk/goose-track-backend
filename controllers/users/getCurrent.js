@@ -3,9 +3,8 @@ const getCurrent = async (req, res) => {
 
     res.status(200).json({
       message: "Success",
-      userData:
-        name,
-        email,
+      name,
+      email
     })
 };
 
