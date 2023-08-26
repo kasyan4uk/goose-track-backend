@@ -10,10 +10,11 @@ const validation = (schema) => {
     const { error } = schema.validate(req.body);
 
     if (error) {
-      res.status(400).json({
-        message: `missing required ${error.details[0].context.key} field`,
+      const errorMessage = res.status(400).json({
+        message: `${error.details[0].message}`,
       });
-      return;
+
+        return errorMessage;
     }
     next();
   };

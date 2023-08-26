@@ -1,52 +1,77 @@
 const { Schema, model } = require("mongoose");
+const Joi = require('joi');
 
 const { handleMongooseError } = require("../helpers");
 
-const Joi = require('joi');
+const emailRegexp = /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+const passworRegexp = /^[a-zA-Z0-9!@#$%&*]{8,25}$/;
 
 const userSchema = new Schema({
-    password: {
+    name: {
         type: String,
-        required: [true, 'Set password for user'],
+        required: [true, 'Set name for user'],
     },
     email: {
         type: String,
         required: [true, 'Email is required'],
         unique: true,
     },
-    subscription: {
-        type: String,
-        enum: ["starter", "pro", "business"],
-        default: "starter"
-    },
+    password: {
+      type: String,
+      required: [true, 'Set password for user'],
+  },
     token: String,
 }, { versionKey: false, timestamps: true });
 
 userSchema.post('save', handleMongooseError);
 
 const registerSchema = Joi.object({
-    password: Joi.string()
-        .pattern(/^[a-zA-Z0-9!@#$%&*]{8,25}$/,
-        )
-        .required(),
+    name: Joi.string()
+        .required()
+        .messages({
+          "any.required": ` Missing required name field`,
+          "string.empty": ` String is empty. Enter name`,
+        }),
     email: Joi.string()
-        .pattern(
-            /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/,
-        )
-        .required(),
-    subscription: Joi.string(),
+        .pattern(emailRegexp)
+        .required()
+        .messages({
+          "any.required": ` Missing required email field`,
+          "string.empty": ` String is empty. Enter email`,
+          "string.pattern.base": "Email is not valid",
+        }),
+    password: Joi.string()
+        .pattern(passworRegexp)
+        .min(8).max(25)
+        .required()
+        .messages({
+          "string.min": `Password should have a minimum length of 8`,
+          "string.max": `Password should have a maximum length of 25`,
+          "any.required": ` Missing required password field`,
+          "string.empty": ` String is empty. Enter password`,
+        }),
 });
 
 const loginSchema = Joi.object({
-    password: Joi.string()
-        .pattern(/^[a-zA-Z0-9!@#$%&*]{8,25}$/,
-        )
-        .required(),
     email: Joi.string()
-        .pattern(
-            /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/,
-        )
-        .required(),
+        .pattern(emailRegexp)
+        .required()
+        .messages({
+          "any.required": ` Missing required email field`,
+          "string.empty": ` String is empty. Enter email`,
+          "string.pattern.base": "Email is not valid",
+        }),
+    password: Joi.string()
+        .pattern(passworRegexp)
+        .min(8).max(25)
+        .required()
+        .messages({
+          "string.min": `Password should have a minimum length of 8`,
+          "string.max": `Password should have a maximum length of 25`,
+          "any.required": ` Missing required password field`,
+          "string.empty": ` String is empty. Enter password`,
+        }),
 });
 
 const schemas = {
