@@ -3,7 +3,7 @@ const { User } = require("../../models/user");
 const updateName = async (req, res) => {
   const { _id } = req.user;
   const { name, email } = req.body;
-  const user = await User.findByIdAndUpdate(_id, name || email, { new: true });
+  const user = await User.findByIdAndUpdate(_id, {name, email}, { new: true });
 
   console.log("user:",user);
 

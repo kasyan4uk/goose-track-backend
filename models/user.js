@@ -21,6 +21,15 @@ const userSchema = new Schema({
       type: String,
       required: [true, 'Set password for user'],
   },
+    phone: {
+      type: String,
+    },
+    bithday: {
+      type: String,
+    },
+    skype: {
+      type: String,
+    },
     token: String,
 }, { versionKey: false, timestamps: true });
 
@@ -84,14 +93,6 @@ const loginSchema = Joi.object({
           .messages({
             "string.empty": ` String is empty. Enter email`,
             "string.pattern.base": "Email is not valid",
-          }),
-      password: Joi.string()
-          .pattern(passworRegexp)
-          .min(8).max(25)
-          .messages({
-            "string.min": `Password should have a minimum length of 8`,
-            "string.max": `Password should have a maximum length of 25`,
-            "string.empty": ` String is empty. Enter password`,
           }),
   });
 
