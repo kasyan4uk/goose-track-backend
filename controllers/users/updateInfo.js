@@ -1,9 +1,9 @@
 const { User } = require("../../models/user");
 
-const updateInfo = async (req, res) => {
+const updateName = async (req, res) => {
   const { _id } = req.user;
-  // const { name, email, password } = req.body;
-  const user = await User.findByIdAndUpdate(_id, req.body, { new: true });
+  const { name, email } = req.body;
+  const user = await User.findByIdAndUpdate(_id, name || email, { new: true });
 
   console.log("user:",user);
 
@@ -16,7 +16,9 @@ const updateInfo = async (req, res) => {
 
   res.status(200).json({
     message: "Success",
+    name,
+    email
   })
 };
 
-module.exports = updateInfo;
+module.exports = updateName;

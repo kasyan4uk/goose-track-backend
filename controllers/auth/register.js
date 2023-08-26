@@ -7,7 +7,7 @@ const register = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user) {
-        throw HttpError(409, "Conflict"); // Email in use
+        throw HttpError(409, `Email ${email} is in use`); 
     };
 
     const hashPassword = await bcrypt.hash(password, 10);

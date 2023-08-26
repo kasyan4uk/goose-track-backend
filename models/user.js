@@ -73,31 +73,32 @@ const loginSchema = Joi.object({
           "string.empty": ` String is empty. Enter password`,
         }),
 });
-const nameSchema = Joi.object({
-  name: Joi.string()
-      .required()
-      .messages({
-        "any.required": ` Missing required name field`,
-        "string.empty": ` String is empty. Enter name`,
-      })
-    });
 
-const emailSchema = Joi.object({
-  email: Joi.string()
-      .pattern(emailRegexp)
-      .required()
-      .messages({
-        "any.required": ` Missing required email field`,
-        "string.empty": ` String is empty. Enter email`,
-        "string.pattern.base": "Email is not valid",
-      }),
-    });
+    const updateInfoSchema = Joi.object({
+      name: Joi.string()
+          .messages({
+            "string.empty": ` String is empty. Enter name`,
+          }),
+      email: Joi.string()
+          .pattern(emailRegexp)
+          .messages({
+            "string.empty": ` String is empty. Enter email`,
+            "string.pattern.base": "Email is not valid",
+          }),
+      password: Joi.string()
+          .pattern(passworRegexp)
+          .min(8).max(25)
+          .messages({
+            "string.min": `Password should have a minimum length of 8`,
+            "string.max": `Password should have a maximum length of 25`,
+            "string.empty": ` String is empty. Enter password`,
+          }),
+  });
 
 const schemas = {
     registerSchema,
     loginSchema,
-    nameSchema,
-    emailSchema,
+    updateInfoSchema
 };
 
 const User = model('user', userSchema);

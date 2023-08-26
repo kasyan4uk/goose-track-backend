@@ -10,12 +10,9 @@ const {schemas} = require('../../models/user');
 
 router.get('/current', authenticate, ctrl.getCurrent);
 
-// зміна імені, ел.пошти, пароля?
-// router.patch('/info', authenticate, validation(schemas.nameSchema), ctrl.updateInfo); 
+router.patch('/info', authenticate, validation(schemas.updateInfoSchema), ctrl.updateInfo); 
 
-router.patch('/info', authenticate, validation(schemas.emailSchema), ctrl.updateInfo); 
 
-// router.patch('/info', authenticate, validation(schemas.nameSchema), ctrl.updateInfo); 
 
 // router.patch("/avatars", authenticate, upload.single("avatar"), ctrl.updateAvatar);
 
