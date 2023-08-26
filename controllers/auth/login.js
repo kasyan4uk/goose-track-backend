@@ -1,19 +1,21 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User } = require("../../models/user");
-const { HttpError } = require("../../helpers/HttpError");
+
+const  {HttpError, ctrlWrapper}  = require("../../helpers");
+
 const { SECRET_KEY } = process.env;
 
 const login = async(req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) { 
-        throw HttpError(401, "Email or password is wrong")
+        throw HttpError(401, "Unauthorized");  // Email or password is wrong
     };
 
     const passwordCompare = await bcrypt.compare(password, user.password);
     if (!passwordCompare) { 
-        throw HttpError(401, "Email or password is wrong")
+        throw HttpError(401, "Unauthorized");
     };
 
     const payload = {
@@ -24,12 +26,13 @@ const login = async(req, res) => {
     await User.findByIdAndUpdate(user.id, {token})
 
     res.status(200).json({
-        token,
-        user: {
-            email: user.email,
-            subscription: user.subscription,
+        "message": "Logged in successfully",
+        "userData": {
+          name: user.name,
+          email: user.email,
+          token,
         },
     });
 };
 
-module.exports = login;
+module.exports = ctrlWrapper(login);
