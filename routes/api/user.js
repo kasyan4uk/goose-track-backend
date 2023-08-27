@@ -4,16 +4,13 @@ const router = express.Router();
 
 const ctrl = require('../../controllers/users');
 
-const { validation, authenticate } = require('../../middleware');
+const { validation, authenticate, upload } = require('../../middleware');
 
 const {schemas} = require('../../models/user');
 
 router.get('/current', authenticate, ctrl.getCurrent);
 
-router.patch('/info', authenticate, validation(schemas.updateInfoSchema), ctrl.updateInfo); 
 
-
-
-// router.patch("/avatars", authenticate, upload.single("avatar"), ctrl.updateAvatar);
+router.patch('/info', authenticate, upload.single("avatar"), validation(schemas.updateInfoSchema), ctrl.updateInfo); 
 
 module.exports = router;

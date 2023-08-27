@@ -1,11 +1,11 @@
 const { User } = require("../../models/user");
 
-const updateName = async (req, res) => {
+const updateInfo = async (req, res) => {
   const { _id } = req.user;
-  const { name, email } = req.body;
-  const user = await User.findByIdAndUpdate(_id, {name, email}, { new: true });
 
-  console.log("user:",user);
+
+  const user = await User.findByIdAndUpdate(_id, req.body, { new: true });
+
 
   if (!user || user === null) {
     res.status(404).json({
@@ -14,11 +14,14 @@ const updateName = async (req, res) => {
     return;
   }
 
+
   res.status(200).json({
     message: "Success",
-    name,
-    email
+    userData: {
+      ...req.body,
+     
+    }
   })
 };
 
-module.exports = updateName;
+module.exports = updateInfo;
