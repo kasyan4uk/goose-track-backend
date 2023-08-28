@@ -2,13 +2,15 @@ const express = require('express');
 
 const router = express.Router();
 
-// const ctrl = require("../../controllers/tasks")
+const ctrl = require("../../controllers/tasks")
 
-const { authenticate } = require('../../middleware');
+const { authenticate, validation } = require('../../middleware');
+
+const { schemas } = require("../../models/task")
 
 router.get("/", authenticate,);
 
-router.post("/", authenticate,);
+router.post("/", authenticate, validation(schemas.addTaskSchema), ctrl.addTask);
 
 router.patch("/:id", authenticate,);
 
