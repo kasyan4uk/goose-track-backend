@@ -22,22 +22,22 @@ const userSchema = new Schema(
       required: [true, "Set password for user"],
     },
     phone: {
-      type: String
+      type: String,
     },
     bithday: {
-      type: String
+      type: String,
     },
     skype: {
-      type: String
+      type: String,
     },
     avatarUrl: {
-      type: String
+      type: String,
     },
     token: {
-      type: String
+      type: String,
     },
-    cloudinaryId: { 
-      type: String
+    cloudinaryId: {
+      type: String,
     },
   },
   { versionKey: false, timestamps: true }
@@ -85,16 +85,16 @@ const updateInfoSchema = Joi.object({
     "string.empty": ` String is empty. Enter email`,
     "string.pattern.base": "Email is not valid",
   }),
-  phone: Joi.string().allow(null).allow('').optional().messages({
+  phone: Joi.string().allow(null).allow("").optional().messages({
     "string.empty": ` String is empty. Enter phone`,
   }),
-  bithday: Joi.string().allow(null).allow('').optional().messages({
+  bithday: Joi.string().allow(null).allow("").optional().messages({
     "string.empty": ` String is empty. Enter bithday`,
   }),
-  skype: Joi.string().allow(null).allow('').optional().messages({
+  skype: Joi.string().allow(null).allow("").optional().messages({
     "string.empty": ` String is empty. Enter skype`,
   }),
-  avatarUrl: Joi.string().allow('').optional(),
+  avatarUrl: Joi.string().allow("").optional(),
 });
 
 const schemas = {

@@ -1,8 +1,8 @@
-const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const multer = require('multer');
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const multer = require("multer");
 
-const {CLOUDINARY_NAME, CLOUDINARY_KEY, CLOUDINARY_SECRET} = process.env;
+const { CLOUDINARY_NAME, CLOUDINARY_KEY, CLOUDINARY_SECRET } = process.env;
 
 cloudinary.config({
   cloud_name: CLOUDINARY_NAME,
@@ -11,22 +11,21 @@ cloudinary.config({
 });
 
 const storage = new CloudinaryStorage({
+  
   cloudinary: cloudinary,
+
   params: async (req, file) => {
-    const folder = 'avatars';
-    
-    console.log("file:", file);
+
+    const folder = "avatars";
 
     return {
       folder: folder,
-      allowed_formats: ['jpg', 'png','jpeg'], 
-      public_id: req.user._id, 
+      allowed_formats: ["jpg", "png", "jpeg"],
+      public_id: req.user._id,
     };
-
   },
 });
 
-// const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 module.exports = upload;
