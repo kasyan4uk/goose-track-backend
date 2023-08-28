@@ -1,11 +1,11 @@
 const { ctrlWrapper } = require("../../helpers");
 
 const getCurrent = require("./getCurrent");
-const updateInfo = require("./updateInfo");
 const updateAvatar = require("./updateAvatar");
+const updateProfile = require("./updateProfile");
 
 module.exports = {
     getCurrent: ctrlWrapper(getCurrent),
-    updateInfo: ctrlWrapper(updateInfo),
     updateAvatar: ctrlWrapper(updateAvatar),
+    updateProfile: ctrlWrapper(updateProfile),
 };

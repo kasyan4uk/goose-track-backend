@@ -11,6 +11,8 @@ const {schemas} = require('../../models/user');
 router.get('/current', authenticate, ctrl.getCurrent);
 
 
-router.patch('/info', authenticate, upload.single("avatar"), validation(schemas.updateInfoSchema), ctrl.updateInfo); 
+// router.patch('/info', authenticate, upload.single("avatar"), ctrl.updateAvatar);
+
+router.patch('/info', authenticate, upload.single("avatar"), validation(schemas.updateInfoSchema), ctrl.updateProfile); 
 
 module.exports = router;

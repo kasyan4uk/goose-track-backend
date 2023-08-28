@@ -30,10 +30,13 @@ const userSchema = new Schema(
     skype: {
       type: String
     },
-    avatar: {
+    avatarUrl: {
       type: String
     },
     token: {
+      type: String
+    },
+    cloudinaryId: { 
       type: String
     },
   },
@@ -91,6 +94,7 @@ const updateInfoSchema = Joi.object({
   skype: Joi.string().allow(null).allow('').optional().messages({
     "string.empty": ` String is empty. Enter skype`,
   }),
+  avatarUrl: Joi.string().allow('').optional(),
 });
 
 const schemas = {

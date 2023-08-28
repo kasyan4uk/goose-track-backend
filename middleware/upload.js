@@ -13,24 +13,20 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
-    let folder;
-
-    if (file.fieldname === 'avatar') {
-      folder = 'avatars';
-    } 
-
+    const folder = 'avatars';
     
     console.log("file:", file);
 
     return {
       folder: folder,
       allowed_formats: ['jpg', 'png','jpeg'], 
-      public_id: req.user_id, 
+      public_id: req.user._id, 
     };
 
   },
 });
 
-const upload = multer({ storage});
+// const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 module.exports = upload;
