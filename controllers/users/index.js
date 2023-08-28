@@ -1,9 +1,8 @@
 const { ctrlWrapper } = require("../../helpers");
-
 const getCurrent = require("./getCurrent");
-const addAvatar = require("./addAvatar");
+const updateProfile = require("./updateProfile");
 
 module.exports = {
-    getCurrent: ctrlWrapper(getCurrent),
-    addAvatar: ctrlWrapper(addAvatar),
+  getCurrent: ctrlWrapper(getCurrent),
+  updateProfile: ctrlWrapper(updateProfile),
 };

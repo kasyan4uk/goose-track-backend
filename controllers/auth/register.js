@@ -1,27 +1,34 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const { User } = require("../../models/user");
 const { HttpError } = require("../../helpers");
+const gravatar = require("gravatar");
 
 const register = async (req, res) => {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
 
-    if (user) {
-        throw HttpError(409, "Conflict"); // Email in use
-    };
+  if (user) {
+    throw HttpError(409, `Email ${email} is in use`);
+  }
 
-    const hashPassword = await bcrypt.hash(password, 10);
+  const hashPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await User.create({ ...req.body, password: hashPassword });
+  const avatarUrl = gravatar.url(email);
 
-    res.status(201).json({
-      message: "Successfully registered",
-      userData: {
-          name: newUser.name,
-          email: newUser.email,
-          id: newUser._id,
-        },
-    })
+  const newUser = await User.create({
+    ...req.body,
+    avatarUrl,
+    password: hashPassword,
+  });
+
+  res.status(201).json({
+    message: "Successfully registered",
+    userData: {
+      name: newUser.name,
+      email: newUser.email,
+      avatarUrl: newUser.avatarUrl,
+    },
+  });
 };
 
 module.exports = register;

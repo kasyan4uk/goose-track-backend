@@ -1,15 +1,21 @@
-const express = require('express');
+const express = require("express");
 
 const router = express.Router();
 
-const ctrl = require('../../controllers/users');
+const ctrl = require("../../controllers/users");
 
-const { authenticate, upload } = require('../../middleware');
+const { validation, authenticate, upload } = require("../../middleware");
 
-router.get('/current', authenticate, ctrl.getCurrent);
+const { schemas } = require("../../models/user");
 
-router.post('/avatar', authenticate, upload.single('avatar'), ctrl.addAvatar);
+router.get("/current", authenticate, ctrl.getCurrent);
 
-router.patch('/info', );
+router.patch(
+  "/info",
+  authenticate,
+  upload.single("avatar"),
+  validation(schemas.updateInfoSchema),
+  ctrl.updateProfile
+);
 
 module.exports = router;
