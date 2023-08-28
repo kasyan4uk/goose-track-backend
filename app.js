@@ -12,6 +12,7 @@ const authRouter = require('./routes/api/auth');
 const taskRouter = require('./routes/api/tasks');
 const reviewRouter = require('./routes/api/reviews');
 
+
 const app = express()
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
@@ -27,6 +28,7 @@ app.use('/user', userRouter);
 app.use('/auth', authRouter);
 app.use('/tasks', taskRouter);
 app.use('/reviews', reviewRouter);
+
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' })
