@@ -10,12 +10,12 @@ const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    throw HttpError(401, "Unauthorized"); // Email or password is wrong
+    throw HttpError(401, "Email or password is wrong"); 
   }
 
   const passwordCompare = await bcrypt.compare(password, user.password);
   if (!passwordCompare) {
-    throw HttpError(401, "Unauthorized");
+    throw HttpError(401, "Email or password is wrong");
   }
 
   const payload = {
@@ -30,7 +30,6 @@ const login = async (req, res) => {
     userData: {
       name: user.name,
       email: user.email,
-      avatarUrl: user.avatarUrl,
       token,
     },
   });

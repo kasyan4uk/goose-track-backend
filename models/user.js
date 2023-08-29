@@ -3,8 +3,13 @@ const Joi = require("joi");
 
 const { handleMongooseError } = require("../helpers");
 
-const emailRegexp =
-  /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+const emailRegexp = /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+// matches: 38 (097) 256 34 77
+const phoneRegexp = /^38 \(\d{3}\) \d{3} \d{2} \d{2}$/; 
+
+// matches: 25/08/1995
+const bithdayRegexp = /^(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
 
 const userSchema = new Schema(
   {
@@ -85,16 +90,18 @@ const updateInfoSchema = Joi.object({
     "string.empty": ` String is empty. Enter email`,
     "string.pattern.base": "Email is not valid",
   }),
-  phone: Joi.string().allow(null).allow("").optional().messages({
+  phone: Joi.string().pattern(phoneRegexp).messages({   
     "string.empty": ` String is empty. Enter phone`,
+    "string.pattern.base": "Phone is not valid",
   }),
-  bithday: Joi.string().allow(null).allow("").optional().messages({
+  bithday: Joi.string().pattern(bithdayRegexp).messages({ 
     "string.empty": ` String is empty. Enter bithday`,
+    "string.pattern.base": "Bithday is not valid",
   }),
-  skype: Joi.string().allow(null).allow("").optional().messages({
+  skype: Joi.string().messages({
     "string.empty": ` String is empty. Enter skype`,
   }),
-  avatarUrl: Joi.string().allow("").optional(),
+  avatarUrl: Joi.string(),
 });
 
 const schemas = {
