@@ -26,7 +26,6 @@ const register = async (req, res) => {
     userData: {
       name: newUser.name,
       email: newUser.email,
-      avatarUrl: newUser.avatarUrl,
     },
   });
 };
