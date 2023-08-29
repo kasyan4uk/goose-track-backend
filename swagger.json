@@ -8,11 +8,7 @@
   "produces": ["application/json"],
   "servers": [
     {
-      "url": "http://localhost:3000/api-docs",
-      "description": "Tasklist application"
-    },
-    {
-      "url": "https://goose-track-backend-odyh.onrender.com/api-docs",
+      "url": "https://goose-track-backend-odyh.onrender.com/",
       "description": "Tasklist application"
     }
   ],

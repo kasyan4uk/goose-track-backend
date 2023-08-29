@@ -11,7 +11,7 @@ const getAllReviews = async (req, res, next) => {
     res.status(200).json({
       message: "Successfully",
       code: 200,
-      data: reviews,
+      reviews: reviews,
       total: reviews.length,
     });
 };
