@@ -2,16 +2,18 @@ const express = require('express');
 
 const router = express.Router();
 
-// const ctrl = require("../../controllers/tasks")
+const ctrl = require("../../controllers/tasks")
 
-const { authenticate } = require('../../middleware');
+const { authenticate, validation } = require('../../middleware');
 
-router.get("/", authenticate,);
+const { schemas } = require("../../models/task")
 
-router.post("/", authenticate,);
+router.get("/", authenticate, ctrl.getAllTasks);
 
-router.patch("/:id", authenticate,);
+router.post("/", authenticate, validation(schemas.addTaskSchema), ctrl.addTask);
 
-router.delete("/:id", authenticate,);
+router.patch("/:id", authenticate, validation(schemas.addTaskSchema), ctrl.updateTask);
+
+router.delete("/:id", authenticate, ctrl.deleteTaskById);
 
 module.exports = router;
