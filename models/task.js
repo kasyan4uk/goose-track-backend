@@ -50,7 +50,6 @@ const taskSchema = Schema(
             type: Schema.Types.ObjectId,
             ref: "user",
             required: true,
-            unique: true,
         },
     },
     { versionKey: false, timestamps: true }
