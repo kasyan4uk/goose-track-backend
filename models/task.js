@@ -26,7 +26,7 @@ const taskSchema = Schema(
                     if (!startTime) return true;
                     return end > startTime;
                 },
-                message: "'End time must be later than start time"
+                message: "End time must be later than start time"
             },
         },
         priority: {
@@ -40,7 +40,7 @@ const taskSchema = Schema(
             required: [true, "Date is required"],
             match: /^\d{4}-\d{2}-\d{2}$/,
         },
-        category: {
+        status: {
             type: String,
             required: [true, "Category is required"],
             enum: CATEGORY,
@@ -63,10 +63,19 @@ const addTaskSchema = Joi.object({
     end: Joi.string().required(),
     priority: Joi.string().required(),
     date: Joi.string().required(),
-    category: Joi.string().required(),
+    status: Joi.string().required(),
 });
 
-const schemas = { addTaskSchema };
+const updateTaskSchema = Joi.object({
+    title: Joi.string(),
+    start: Joi.string(),
+    end: Joi.string(),
+    priority: Joi.string(),
+    date: Joi.string(),
+    status: Joi.string(),
+});
+
+const schemas = { addTaskSchema, updateTaskSchema };
 
 const Task = model("task", taskSchema);
 

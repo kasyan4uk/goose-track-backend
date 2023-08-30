@@ -12,7 +12,7 @@ router.get("/", authenticate, ctrl.getAllTasks);
 
 router.post("/", authenticate, validation(schemas.addTaskSchema), ctrl.addTask);
 
-router.patch("/:id", authenticate, validation(schemas.addTaskSchema), ctrl.updateTask);
+router.patch("/:id", authenticate, validation(schemas.updateTaskSchema), ctrl.updateTask);
 
 router.delete("/:id", authenticate, ctrl.deleteTaskById);
 
