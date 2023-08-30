@@ -23,7 +23,7 @@ const updateOwnUserReview = async (req, res) => {
   res.status(200).json({
     message: "Review was updated successfully",
     code: 200,
-    data: review,
+    reviewData: review,
   });
 };
 
