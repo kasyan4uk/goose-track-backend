@@ -95,8 +95,8 @@ const updateInfoSchema = Joi.object({
     "string.pattern.base": "Phone is not valid",
   }),
   birthday: Joi.string().pattern(birthdayRegexp).messages({ 
-    "string.empty": ` String is empty. Enter bithday`,
-    "string.pattern.base": "Bithday is not valid",
+    "string.empty": ` String is empty. Enter birthday`,
+    "string.pattern.base": "Birthday is not valid",
   }),
   skype: Joi.string().messages({
     "string.empty": ` String is empty. Enter skype`,
