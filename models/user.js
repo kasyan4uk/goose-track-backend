@@ -9,7 +9,7 @@ const emailRegexp = /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\
 const phoneRegexp = /^38 \(\d{3}\) \d{3} \d{2} \d{2}$/; 
 
 // matches: 25/08/1995
-const bithdayRegexp = /^(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+const birthdayRegexp = /^(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
 
 const userSchema = new Schema(
   {
@@ -29,7 +29,7 @@ const userSchema = new Schema(
     phone: {
       type: String,
     },
-    bithday: {
+    birthday: {
       type: String,
     },
     skype: {
@@ -94,7 +94,7 @@ const updateInfoSchema = Joi.object({
     "string.empty": ` String is empty. Enter phone`,
     "string.pattern.base": "Phone is not valid",
   }),
-  bithday: Joi.string().pattern(bithdayRegexp).messages({ 
+  birthday: Joi.string().pattern(birthdayRegexp).messages({ 
     "string.empty": ` String is empty. Enter bithday`,
     "string.pattern.base": "Bithday is not valid",
   }),
