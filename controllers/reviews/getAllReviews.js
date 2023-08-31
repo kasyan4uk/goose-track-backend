@@ -2,7 +2,8 @@ const { Review } = require("../../models/review");
 const { HttpError } = require("../../helpers");
 
 const getAllReviews = async (req, res, next) => {
-    const reviews = await Review.find();
+    // const reviews = await Review.find();
+    const reviews = await Review.find().populate("owner", "name avatarUrl");
 
     if (!reviews) { 
         throw HttpError(404, "Reviews are not found");

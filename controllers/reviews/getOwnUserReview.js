@@ -20,7 +20,7 @@ const getOwnUserReview = async (req, res) => {
     res.status(200).json({
        message: "Successfully",
        code: 200,
-       reviewData: review,
+       review,
     });
 };
 
