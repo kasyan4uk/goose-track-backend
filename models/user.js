@@ -20,6 +20,7 @@ const userSchema = new Schema(
     email: {
       type: String,
       required: [true, "Email is required"],
+      match: emailRegexp,
       unique: true,
     },
     password: {
@@ -28,9 +29,11 @@ const userSchema = new Schema(
     },
     phone: {
       type: String,
+      match: phoneRegexp,
     },
     birthday: {
       type: String,
+      match: birthdayRegexp,
     },
     skype: {
       type: String,
@@ -39,9 +42,6 @@ const userSchema = new Schema(
       type: String,
     },
     token: {
-      type: String,
-    },
-    cloudinaryId: {
       type: String,
     },
   },
