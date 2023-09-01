@@ -10,7 +10,7 @@ const getAllTasks = async (req, res, next) => {
 
     console.log( req.query)
 
-    const tasks = await Task.find(filterTask);
+    const tasks = await Task.find(filterTask).populate("owner", "name avatarUrl");
 
     if(!tasks) {
         throw HttpError(404, "Not found")
