@@ -3,7 +3,7 @@ const { User } = require("../../models/user");
 const updateProfile = async (req, res) => {
   const { _id } = req.user;
 
-  const avatarUrl = req.file.path;
+  const avatarUrl = req.file?.path;
 
   if (req.file) {
     const user = await User.findByIdAndUpdate(
@@ -21,7 +21,7 @@ const updateProfile = async (req, res) => {
       return;
     }
   }
-
+  
   res.status(200).json({
     message: "Success",
     userData: {
