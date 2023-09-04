@@ -1539,7 +1539,7 @@
 
       "UpdateTaskRequest": {
         "type": "object",
-        "required": ["title", "start", "end", "date", "priority", "category"],
+        "required": ["title", "start", "end", "date", "priority", "status"],
         "properties": {
           "title": {
             "type": "string",
@@ -1585,7 +1585,7 @@
           "end": "14:30",
           "priority": "high",
           "date": "2023-08-24",
-          "category": "to-do"
+          "status": "to-do"
         }
       },
 
