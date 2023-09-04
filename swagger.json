@@ -1438,7 +1438,7 @@
                 "end": "12:30",
                 "priority": "low",
                 "date": "2023-08-29",
-                "status": "todo",
+                "status": "to-do",
                 "owner": "dfd9h5h45xd1g41s5d1hg1x",
                 "createdAt": "2023-08-25T15:30:16.215Z",
                 "updatedAt": "2023-08-26T15:30:16.215Z"
@@ -1450,7 +1450,7 @@
                 "end": "18:30",
                 "priority": "low",
                 "date": "2023-08-26",
-                "status": "todo",
+                "status": "to-do",
                 "owner": "64d387e745021a7e4d683ba0",
                 "createdAt": "2023-08-15T15:31:41.730Z",
                 "updatedAt": "2023-08-15T15:31:41.730Z"
@@ -1462,7 +1462,7 @@
                 "end": "14:30",
                 "priority": "low",
                 "date": "2023-08-28",
-                "status": "todo",
+                "status": "to-do",
                 "owner": "64d387e745021a7e4d683ba0",
                 "createdAt": "2023-08-24T15:36:05.019Z",
                 "updatedAt": "2023-08-28T15:36:05.019Z"
@@ -1508,8 +1508,8 @@
           },
           "status": {
             "type": "string",
-            "enum": ["todo", "inprogress", "done"],
-            "default": "todo",
+            "enum": ["to-do", "in-progress", "done"],
+            "default": "to-do",
             "description": "Task's due to do status"
           }
         },
@@ -1519,7 +1519,7 @@
           "end": "16:30",
           "priority": "medium",
           "date": "2023-08-23",
-          "status": "todo"
+          "status": "to-do"
         }
       },
 
@@ -1573,10 +1573,10 @@
           },
           "status": {
             "type": "string",
-            "enum": ["todo", "inprogress", "done"],
-            "default": "todo",
+            "enum": ["to-do", "in-progress", "done"],
+            "default": "to-do",
             "description": "Task's due to do status",
-            "example": "inprogress"
+            "example": "in-progress"
           }
         },
         "example": {
@@ -1585,7 +1585,7 @@
           "end": "14:30",
           "priority": "high",
           "date": "2023-08-24",
-          "category": "todo"
+          "category": "to-do"
         }
       },
 
@@ -1716,8 +1716,8 @@
           },
           "status": {
             "type": "string",
-            "enum": ["todo", "inprogress", "done"],
-            "default": "todo",
+            "enum": ["to-do", "in-progress", "done"],
+            "default": "to-do",
             "description": "Task's due to do status"
           },
           "owner": {
