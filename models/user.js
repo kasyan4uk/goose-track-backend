@@ -40,6 +40,7 @@ const userSchema = new Schema(
     },
     avatarUrl: {
       type: String,
+      default: '',
     },
     token: {
       type: String,
@@ -85,23 +86,24 @@ const loginSchema = Joi.object({
 const updateInfoSchema = Joi.object({
   name: Joi.string().min(4).optional().messages({
     "string.empty": ` String is empty. Enter name`,
+    "string.min": `Password should have a minimum length of 4`,
   }),
   email: Joi.string().pattern(emailRegexp).optional().messages({
     "string.empty": ` String is empty. Enter email`,
     "string.pattern.base": "Email is not valid",
   }),
-  phone: Joi.string().pattern(phoneRegexp).messages({   
+  phone: Joi.string().pattern(phoneRegexp).optional().messages({   
     "string.empty": ` String is empty. Enter phone`,
     "string.pattern.base": "Phone is not valid",
   }),
-  birthday: Joi.string().pattern(birthdayRegexp).messages({ 
+  birthday: Joi.string().pattern(birthdayRegexp).optional().messages({ 
     "string.empty": ` String is empty. Enter birthday`,
     "string.pattern.base": "Birthday is not valid",
   }),
-  skype: Joi.string().messages({
+  skype: Joi.string().optional().messages({
     "string.empty": ` String is empty. Enter skype`,
   }),
-  avatarUrl: Joi.string(),
+  avatarUrl: Joi.string().optional().allow(''),
 });
 
 const schemas = {
