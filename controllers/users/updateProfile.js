@@ -5,7 +5,6 @@ const updateProfile = async (req, res) => {
 
   const avatarUrl = req.file?.path;
 
-  if (req.file) {
     const user = await User.findByIdAndUpdate(
       _id,
       { ...req.body, avatarUrl },
@@ -20,7 +19,6 @@ const updateProfile = async (req, res) => {
       });
       return;
     }
-  }
   
   res.status(200).json({
     message: "Success",
