@@ -10,6 +10,10 @@
     {
       "url": "https://goose-track-backend-odyh.onrender.com/",
       "description": "Tasklist application"
+    },
+    {
+      "url": "http://localhost:3000",
+      "description": "Tasklist application (local server)"
     }
   ],
   "tags": [
