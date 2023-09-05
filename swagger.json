@@ -153,9 +153,10 @@
       "post": {
         "tags": ["Auth"],
         "summary": "User logging out",
-        "security": [{ "Bearer": [] }],
         "operationId": "logout",
         "parameters": [],
+        
+        "security": [ { "Bearer": [] } ],
 
         "responses": {
           "204": {
@@ -196,17 +197,7 @@
         "summary": "To get info about current user",
         "operationId": "getUserInfo",
         "security": [{ "Bearer": [] }],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "The token issued to the current user",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
 
         "responses": {
           "200": {
@@ -249,17 +240,7 @@
         "summary": "Updates user data",
         "security": [{ "Bearer": [] }],
         "operationId": "update",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "The token issued to the current user",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
 
         "requestBody": {
           "description": "Data object to update user profile",
@@ -487,17 +468,10 @@
         "security": [{ "Bearer": [] }],
         "parameters": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "The token issued to the current user",
-            "schema": { "type": "string" }
-          },
-          {
             "name": "taskId",
             "in": "path",
             "required": true,
-            "description": "ID of task to update",
+            "description": "ID of the task to update",
             "schema": { "type": "string" },
             "example": "6438255d9ef48a24e5d81693"
           }
@@ -570,21 +544,15 @@
         "security": [{ "Bearer": [] }],
         "parameters": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "required": true,
-            "description": "The token issued to the current user",
-            "schema": { "type": "string" }
-          },
-          {
             "name": "taskId",
             "in": "path",
             "required": true,
-            "description": "Notice ID",
+            "description": "ID of the task to delete it",
             "schema": { "type": "string" },
             "example": "dg51vcf51xdfz1d4z5gf1v5x"
           }
         ],
+
         "responses": {
           "200": {
             "description": "OK",
@@ -1368,8 +1336,8 @@
           },
           "avatarUrl": {
             "type": "string",
-            "description": "User's avatar",
-            "example": "https://avatar.com"
+            "description": "User's avatar file / image",
+            "format": "binary"
           }
         }
       },
