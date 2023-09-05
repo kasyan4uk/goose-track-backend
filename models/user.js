@@ -5,10 +5,6 @@ const { handleMongooseError } = require("../helpers");
 
 const emailRegexp = /^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
 
-// matches: 38 (097) 256 34 77
-const phoneRegexp = /^38 \(\d{3}\) \d{3} \d{2} \d{2}$/; 
-
-// matches: 25/08/1995
 const birthdayRegexp = /^(0[1-9]|1\d|2\d|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
 
 const userSchema = new Schema(
@@ -29,7 +25,6 @@ const userSchema = new Schema(
     },
     phone: {
       type: String,
-      match: phoneRegexp,
     },
     birthday: {
       type: String,
@@ -92,9 +87,11 @@ const updateInfoSchema = Joi.object({
     "string.empty": ` String is empty. Enter email`,
     "string.pattern.base": "Email is not valid",
   }),
-  phone: Joi.string().pattern(phoneRegexp).optional().messages({   
+  phone: Joi.string().min(12).max(12).optional().messages({   
     "string.empty": ` String is empty. Enter phone`,
     "string.pattern.base": "Phone is not valid",
+    "string.max": `Phone should have 12 symbols`,
+    "string.min": `Phone should have 12 symbols`,
   }),
   birthday: Joi.string().pattern(birthdayRegexp).optional().messages({ 
     "string.empty": ` String is empty. Enter birthday`,
