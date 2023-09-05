@@ -13,9 +13,8 @@ const googleAuth = async (req, res) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
   await User.findByIdAndUpdate(id, { token });
 
-  // метод redirect перенапрявляет юзера на другой адрес
+  // methor 'redirect' redirects the user to other url-address (GH-page in this case)
   res.redirect(`${FRONTEND_GH_PAGE_URL}?token=${token}`);
-  // !!! изменить на адрес задеплоенного фронта, если надо !!!
 };
 
 module.exports = googleAuth;

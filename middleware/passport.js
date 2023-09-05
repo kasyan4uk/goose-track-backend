@@ -11,7 +11,7 @@ const {
   // BASE_URL_LOCAL,
 } = process.env;
 
-// обьект параметров
+// params obj
 const googleParams = {
   clientID: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_CLIENT_SECRET,
@@ -28,20 +28,20 @@ const googleCallback = async (
   done
 ) => {
   try {
-    // google возвращает инфо при юзера (имя и имейл)
+    // google returns info about user (name and email)
     const { email, displayName } = profile;
 
-    // если в БД уже есть юзер с таким gmail - (юзер хочет залогиниться) выдаем токен
-    // если нет - юзер должен зарегистрироваться
+    // if user with this email (gmail) is already in DB - we isue token for this user (he wants to log in)
+    // othrwise - user has to register
     const user = await User.findOne({ email });
 
-    // если юзер с таким gmail есть в БД
+    // if user with such email (gmail) is in DB
     if (user) {
-      return done(null, user); // этого юзера записывает в req.user (req.user = user)
+      return done(null, user); // we 'write' this user in req.user (req.user = user)
     }
 
-    // если юзера с таким gmail нет в БД - его нужно зарегиcтрировать через google (добавить его в БД)
-    // создаем для юзера пароль (юзер не будет его использовать никогда)
+    // if user with such email/gmail is not in DB - we register him and add to DB using his gmail
+    // creating password for user (user will not use it)
     const hashedPassword = await bcrypt.hash(uuid.v4(), 10);
     const newUser = await User.create({
       email,
@@ -49,17 +49,17 @@ const googleCallback = async (
       name: displayName,
     });
 
-      // если юзер регистрируется через google, он сразу и логиниться через него (передаем управление дальше)
+      // in case user registers via google/gmail, he also logs in via gmail (we pass control further)
       done(null, newUser);
   } catch (error) {
       done(error, false);
   }
 };
 
-// гугл-стратегия (то, что должен выполнять passport)
+// google-strategy (passport follows it)
 const googleStrategy = new Strategy(googleParams, googleCallback);
 
-// добавляем стратегию в passport  (если авторизация через гугл - по это это стратегии)
+// adding strategy to passport (in case authorization is via google - follow this strategy)
 passport.use("google", googleStrategy);
 
 module.exports = passport;
