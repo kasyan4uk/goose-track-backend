@@ -26,8 +26,4 @@ const deleteTaskById = async (req, res) => {
    })
 };
 
-module.exports = deleteTaskById;
-
-
-
-      
+module.exports = deleteTaskById;      
