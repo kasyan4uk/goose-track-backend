@@ -13,7 +13,7 @@ const googleAuth = async (req, res) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
   await User.findByIdAndUpdate(id, { token });
 
-  // methor 'redirect' redirects the user to other url-address (GH-page in this case)
+  // method 'redirect' redirects the user to other url-address (frontend GH-page in this case)
   res.redirect(`${FRONTEND_GH_PAGE_URL}?token=${token}`);
 };
 
