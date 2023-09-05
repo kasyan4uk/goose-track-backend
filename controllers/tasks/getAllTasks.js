@@ -3,12 +3,15 @@ const { Task } = require("../../models/task");
 
 const getAllTasks = async (req, res, next) => {
     const { _id: owner } = req.user;
+    const { year, month } = req.query;
     
     const filterTask = {
         owner,
     }
 
-    console.log( req.query)
+    if (year && month) {
+        filterTask.date = { $regex: `^${year}-0?${month}-\\d{2}$` };
+    } 
 
     const tasks = await Task.find(filterTask).populate("owner", "name avatarUrl");
 
