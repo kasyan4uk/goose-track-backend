@@ -3,7 +3,7 @@ const logger = require('morgan')
 const cors = require('cors')
 require('dotenv').config();
 
-// підключення swagger документації 
+// swagger documentation (swagger.json) connection 
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
@@ -21,7 +21,7 @@ app.use(logger(formatsLogger))
 app.use(cors())
 app.use(express.json())
 
-// підключення swagger документації 
+// swagger documentation (swagger.json) connection 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/user', userRouter);

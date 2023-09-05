@@ -10,14 +10,14 @@ const { schemas } = require("../../models/user");
 
 router.post("/register", validation(schemas.registerSchema), ctrl.register);
 
-// на этот роут (...onrender.com/auth/google) юзер переходит с фронтенда (если запрос приходит сюда - юзера перекидываем на гугл)
+// this route (...onrender.com/auth/google) user follows from frontend (and we redirect user to google.accounts page)
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
 );
 
-// при клике на свой акк в на странице google.accounts добавляем юзера в req.user или регистрируем его + добавляем юзера в req.user
-// { session: false } не создает сессию
+// on click on user's email/gmail in google.accounts page - we add user to req.user or register user + add user to req.user
+// { session: false } does not create session
 router.get(
   "/google/callback",
   passport.authenticate("google", { session: false }),
