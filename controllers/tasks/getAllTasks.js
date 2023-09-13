@@ -8,7 +8,7 @@ const getAllTasks = async (req, res, next) => {
     const currentDate = new Date();
     const currentYear = year || currentDate.getFullYear();
     const currentMonth = month || (currentDate.getMonth() + 1);
-    
+
     const filterTask = {
         owner,
         date: { $regex: `^${currentYear}-0?${currentMonth}-${day ? day : '\\d{2}'}$` },
